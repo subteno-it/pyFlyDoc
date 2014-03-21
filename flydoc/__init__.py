@@ -157,4 +157,44 @@ class FlyDoc(object):
         """
         self.sessionService.Logout()
 
+    def browse(self, filter='msn=*', sortOrder='', attributes='', nItems=None, includeSubNodes=False, searchInArchive=False, reverse=False):
+        """
+        Generator used to browse transports
+        """
+        # Create QueryRequest object
+        request = self.queryService._create('QueryRequest')
+        # Request for transports one by one for the generator to work
+        request.nItems = 1
+        request.filter = filter
+        request.sortOrder = sortOrder
+        request.attributes = attributes
+        request.includeSubNodes = includeSubNodes
+        request.searchInArchive = searchInArchive
+
+        # Request for the first or last item, depending on the order
+        if not reverse:
+            result = self.queryService.QueryFirst(request)
+        else:
+            result = self.queryService.QueryLast(request)
+
+        totalNumber = result.nTransports
+        # Check if there is at least one result
+        if result.nTransports > 0:
+            yield result.transports.Transport[0]
+
+        # Add the queryID in headers (required)
+        QueryHeaderValue = self.queryService._create('QueryHeader')
+        QueryHeaderValue.queryID = self.queryService._getLastResponseHeaders().getChild('QueryHeaderValue').getChild('queryID').getText()
+        self.queryService._addHeader('QueryHeaderValue', QueryHeaderValue)
+        while(not result.noMoreItems and (nItems is not None and totalNumber < nItems)):
+            # Request for the next item, depending on the order
+            if not reverse:
+                result = self.queryService.QueryNext(request)
+            else:
+                result = self.queryService.QueryPrevious(request)
+
+            totalNumber += result.nTransports
+            if result.nTransports > 0:
+                yield result.transports.Transport[0]
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
