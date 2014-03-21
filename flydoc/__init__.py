@@ -22,6 +22,8 @@
 #
 ##############################################################################
 
+import os
+import base64
 import pkg_resources
 from suds.client import Client
 
@@ -95,6 +97,18 @@ class FlyDocSubmissionService(FlyDocService):
         self.RESOURCE_TYPE = self.client.factory.create('RESOURCE_TYPE')
         self.WSFILE_MODE = self.client.factory.create('WSFILE_MODE')
         self.VAR_TYPE = self.client.factory.create('VAR_TYPE')
+
+    def _readFile(self, attachment):
+        """
+        Creates a WSFile object, with contents of the supplied attachment file
+        """
+        wsFile = self._create('WSFile')
+        wsFile.name = os.path.basename(attachment)
+        wsFile.mode = self.WSFILE_MODE.MODE_INLINED
+        with open(attachment, 'r') as fil:
+            wsFile.content = base64.b64encode(fil.read())
+
+        return wsFile
 
 
 class FlyDocQueryService(FlyDocService):
