@@ -22,6 +22,7 @@
 #
 ##############################################################################
 
+import pkg_resources
 from suds.client import Client
 
 
@@ -66,5 +67,25 @@ class FlyDocQueryService(FlyDocService):
         self.ATTACHMENTS_FILTER = self.client.factory.create('ATTACHMENTS_FILTER')
         self.WSFILE_MODE = self.client.factory.create('WSFILE_MODE')
         self.VAR_TYPE = self.client.factory.create('VAR_TYPE')
+
+
+class FlyDoc(object):
+    """
+    General FlyDoc class
+    """
+    def __init__(self, sessionServiceWsdlFile=None, submissionServiceWsdlFile=None, queryServiceWsdlFile=None):
+        """
+        Initialize services instances from WSDL files
+        """
+        if sessionServiceWsdlFile is None:
+            sessionServiceWsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SessionService.wsdl')
+        if submissionServiceWsdlFile is None:
+            submissionServiceWsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SubmissionService.wsdl')
+        if queryServiceWsdlFile is None:
+            queryServiceWsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/QueryService.wsdl')
+
+        self.sessionService = FlyDocSessionService(sessionServiceWsdlFile)
+        self.submissionService = FlyDocSubmissionService(submissionServiceWsdlFile)
+        self.queryService = FlyDocQueryService(queryServiceWsdlFile)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
