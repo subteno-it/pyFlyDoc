@@ -34,6 +34,31 @@ class FlyDocService(object):
     def __init__(self, wsdlFile):
         self.client = Client(wsdlFile)
 
+    def _create(self, name, values=None):
+        """
+        Creates, and optioally populates, a new complex type instance
+        """
+        if values is None:
+            values = {}
+
+        value = self.client.factory.create(name)
+        for key, val in values.items():
+            value[key] = val
+
+        return value
+
+    def __getattr__(self, name):
+        """
+        Binds method calls on the class, and all other calls prefixed by an underscore
+        """
+        if name.startswith('_') and hasattr(self.client, name[1:]):
+            return getattr(self.client, name[1:])
+
+        if hasattr(self.client.service, name):
+            return getattr(self.client.service, name)
+
+        raise AttributeError('Unknown attribute %s' % name)
+
 
 class FlyDocSessionService(FlyDocService):
     """
