@@ -242,4 +242,18 @@ class FlyDoc(object):
         for attachment in self.queryService.QueryAttachments(transportID, attachmentFilter, outputFileMode).attachments.Attachment:
             yield attachment
 
+    def approve(self, identifier):
+        """
+        Approve a transport that is waiting for validation
+        The identifier argument can be an integer (transportID), or a complex filter (QueryRequest)
+        """
+        return self.queryService.Approve(identifier)
+
+    def cancel(self, identifier):
+        """
+        Cancel a transport that is waiting for validation
+        The identifier argument can be an integer (transportID), or a complex filter (QueryRequest)
+        """
+        return self.queryService.Cancel(identifier)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
