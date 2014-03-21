@@ -171,6 +171,30 @@ class FlyDoc(object):
         """
         self.sessionService.Logout()
 
+    def submit(self, name, transportVars, transportAttachments):
+        """
+        Send some documents to FlyDoc
+        """
+        # Create a new transport
+        transport = self.submissionService._create('Transport')
+        transport.transportName = name
+
+        # Add vars in the transport
+        transport.vars.Var.extend([self.submissionService._create('Var', {
+            'attribute': attribute,
+            'simpleValue': value,
+            'type': self.submissionService.VAR_TYPE.TYPE_STRING,
+        }) for attribute, value in transportVars.items()])
+
+        # Add attachments
+        # TODO : Allow to add attachments from path (string) or contents (base64 encoded content + filename)
+        transport.attachments.Attachment.extend([self.submissionService._create('Attachment', {
+            'sourceAttachment': self.submissionService._readFile(attachment),
+        }) for attachment in transportAttachments])
+
+        # Submit the transport
+        return self.submissionService.SubmitTransport(transport=transport)
+
     def browse(self, filter='msn=*', sortOrder='', attributes='', nItems=None, includeSubNodes=False, searchInArchive=False, reverse=False):
         """
         Generator used to browse transports
