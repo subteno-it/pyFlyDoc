@@ -197,4 +197,11 @@ class FlyDoc(object):
             if result.nTransports > 0:
                 yield result.transports.Transport[0]
 
+    def browseAttachments(self, transportID, attachmentFilter=None, outputFileMode=None):
+        """
+        Generator used to browse attachments of a transport
+        """
+        for attachment in self.queryService.QueryAttachments(transportID, attachmentFilter, outputFileMode).attachments.Attachment:
+            yield attachment
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
