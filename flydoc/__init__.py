@@ -47,6 +47,12 @@ class FlyDocService(object):
 
         return value
 
+    def _getLastResponseHeaders(self):
+        """
+        Returns the headers of the last received response
+        """
+        return self.client.last_received().getChild('Envelope').getChild('Header')
+
     def _addHeader(self, headerName, headerValue):
         """
         Add a header for the soap query
