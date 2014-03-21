@@ -123,4 +123,32 @@ class FlyDoc(object):
         self.submissionService = FlyDocSubmissionService(submissionServiceWsdlFile)
         self.queryService = FlyDocQueryService(queryServiceWsdlFile)
 
+    def login(self, username, password):
+        """
+        Initialize the services by retrieving a session identifier
+        """
+        # Initialize services bindings
+        bindings = self.sessionService.GetBindings(username)
+        self.sessionService._set_options(location=bindings.sessionServiceLocation)
+        self.submissionService._set_options(location=bindings.submissionServiceLocation)
+        self.queryService._set_options(location=bindings.queryServiceLocation)
+
+        # Call the login method
+        self.loginInfo = self.sessionService.Login(userName=username, password=password)
+
+        # Define the session header value
+        SessionHeaderValue = self.sessionService._create('SessionHeader')
+        SessionHeaderValue.sessionID = self.loginInfo.sessionID
+
+        # Set the proper header values
+        self.sessionService._addHeader('SessionHeaderValue', SessionHeaderValue)
+        self.submissionService._addHeader('SessionHeaderValue', SessionHeaderValue)
+        self.queryService._addHeader('SessionHeaderValue', SessionHeaderValue)
+
+    def logout(self):
+        """
+        Close the connection with the services
+        """
+        self.sessionService.Logout()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
