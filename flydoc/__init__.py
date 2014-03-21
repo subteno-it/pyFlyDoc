@@ -47,6 +47,16 @@ class FlyDocService(object):
 
         return value
 
+    def _addHeader(self, headerName, headerValue):
+        """
+        Add a header for the soap query
+        """
+        headers = self.client.options.soapheaders
+        if not isinstance(headers, dict):
+            headers = {}
+        headers.update({headerName: headerValue})
+        self.client.set_options(soapheaders=headers)
+
     def __getattr__(self, name):
         """
         Binds method calls on the class, and all other calls prefixed by an underscore
