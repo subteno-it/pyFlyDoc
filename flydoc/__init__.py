@@ -108,6 +108,7 @@ class FlyDocSubmissionService(FlyDocService):
     def _readFile(self, attachment):
         """
         Creates a WSFile object, with contents of the supplied attachment file
+        @param attachment : Name of the file to read
         """
         wsFile = self._create('WSFile')
         wsFile.name = os.path.basename(attachment)
@@ -115,6 +116,18 @@ class FlyDocSubmissionService(FlyDocService):
         with open(attachment, 'r') as fil:
             wsFile.content = base64.b64encode(fil.read())
 
+        return wsFile
+
+    def _createFile(self, name, data):
+        """
+        Creates a WSFile object, with data supplied as argument
+        @param name : Name of the created WSFile
+        @param data : Data to put in the WSFile
+        """
+        wsFile = self._create('WSFile')
+        wsFile.name = name
+        wsFile.mode = self.WSFILE_MODE.MODE_INLINED
+        wsFile.content = data
         return wsFile
 
 
@@ -174,10 +187,16 @@ class FlyDoc(object):
         """
         self.sessionService.Logout()
 
-    def submit(self, name, transportVars, transportAttachments):
+    def submit(self, name, transportVars, transportAttachments=None, transportContents=None):
         """
         Send some documents to FlyDoc
         """
+        if transportAttachments is None:
+            transportAttachments = []
+
+        if transportContents is None:
+            transportContents = {}
+
         # Create a new transport
         transport = self.submissionService._create('Transport')
         transport.transportName = name
@@ -189,11 +208,14 @@ class FlyDoc(object):
             'type': self.submissionService.VAR_TYPE.TYPE_STRING,
         }) for attribute, value in transportVars.items()])
 
-        # Add attachments
-        # TODO : Allow to add attachments from path (string) or contents (base64 encoded content + filename)
+        # Add files in attachments
         transport.attachments.Attachment.extend([self.submissionService._create('Attachment', {
             'sourceAttachment': self.submissionService._readFile(attachment),
         }) for attachment in transportAttachments])
+        # Add direct contents in attachments
+        transport.attachments.Attachment.extend([self.submissionService._create('Attachment', {
+            'sourceAttachment': self.submissionService._createFile(content['name'], content['data'])
+        }) for content in transportContents])
 
         # Submit the transport
         return self.submissionService.SubmitTransport(transport=transport)
