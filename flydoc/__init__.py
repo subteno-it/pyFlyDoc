@@ -82,14 +82,21 @@ class FlyDocSessionService(FlyDocService):
     """
     Session Service class
     """
-    pass
+    def __init__(self, wsdlFile=None):
+        if wsdlFile is None:
+            wsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SessionService.wsdl')
+
+        super(FlyDocSessionService, self).__init__(wsdlFile)
 
 
 class FlyDocSubmissionService(FlyDocService):
     """
     Submission Service class
     """
-    def __init__(self, wsdlFile):
+    def __init__(self, wsdlFile=None):
+        if wsdlFile is None:
+            wsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SubmissionService.wsdl')
+
         super(FlyDocSubmissionService, self).__init__(wsdlFile)
 
         # Initialize enumeration constants
@@ -115,7 +122,10 @@ class FlyDocQueryService(FlyDocService):
     """
     Query Service class
     """
-    def __init__(self, wsdlFile):
+    def __init__(self, wsdlFile=None):
+        if wsdlFile is None:
+            wsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/QueryService.wsdl')
+
         super(FlyDocQueryService, self).__init__(wsdlFile)
 
         # Initialize enumeration constants
@@ -132,13 +142,6 @@ class FlyDoc(object):
         """
         Initialize services instances from WSDL files
         """
-        if sessionServiceWsdlFile is None:
-            sessionServiceWsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SessionService.wsdl')
-        if submissionServiceWsdlFile is None:
-            submissionServiceWsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SubmissionService.wsdl')
-        if queryServiceWsdlFile is None:
-            queryServiceWsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/QueryService.wsdl')
-
         self.sessionService = FlyDocSessionService(sessionServiceWsdlFile)
         self.submissionService = FlyDocSubmissionService(submissionServiceWsdlFile)
         self.queryService = FlyDocQueryService(queryServiceWsdlFile)
