@@ -25,8 +25,22 @@
 import os
 import base64
 import pkg_resources
-from enum import IntEnum
+from enum import Enum, IntEnum
 from suds.client import Client
+
+
+class FlyDocTransportName(Enum):
+    Archive = 'Archive'
+    CmdLine = 'Command line'
+    Pickup = 'Delivery Warerule'
+    Mail = 'Email'
+    Fax = 'Fax'
+    CustomData = 'Flexible form'
+    GARC = 'Generic archive'
+    MODEsker = 'Mail'
+    Sms = 'SMS'
+    UserForm = 'User form'
+    FaxRecv = 'Received Fax'
 
 
 class FlyDocTransportState(IntEnum):
