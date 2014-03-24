@@ -84,7 +84,7 @@ class FlyDocSessionService(FlyDocService):
     """
     def __init__(self, wsdlFile=None):
         if wsdlFile is None:
-            wsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SessionService.wsdl')
+            wsdlFile = 'file://' + pkg_resources.resource_filename('pyflydoc', 'WSDL/SessionService.wsdl')
 
         super(FlyDocSessionService, self).__init__(wsdlFile)
 
@@ -95,7 +95,7 @@ class FlyDocSubmissionService(FlyDocService):
     """
     def __init__(self, wsdlFile=None):
         if wsdlFile is None:
-            wsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/SubmissionService.wsdl')
+            wsdlFile = 'file://' + pkg_resources.resource_filename('pyflydoc', 'WSDL/SubmissionService.wsdl')
 
         super(FlyDocSubmissionService, self).__init__(wsdlFile)
 
@@ -137,7 +137,7 @@ class FlyDocQueryService(FlyDocService):
     """
     def __init__(self, wsdlFile=None):
         if wsdlFile is None:
-            wsdlFile = 'file://' + pkg_resources.resource_filename('flydoc', 'WSDL/QueryService.wsdl')
+            wsdlFile = 'file://' + pkg_resources.resource_filename('pyflydoc', 'WSDL/QueryService.wsdl')
 
         super(FlyDocQueryService, self).__init__(wsdlFile)
 
