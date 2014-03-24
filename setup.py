@@ -26,7 +26,7 @@ from distutils.core import setup
 
 setup(
     name='pyFlyDoc',
-    version='0.1',
+    version='0.2',
     author='Sylvain Garancher',
     author_email='sylvain.garancher@syleam.fr',
     packages=['pyflydoc'],
