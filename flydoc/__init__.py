@@ -127,7 +127,7 @@ class FlyDocSubmissionService(FlyDocService):
         wsFile = self._create('WSFile')
         wsFile.name = name
         wsFile.mode = self.WSFILE_MODE.MODE_INLINED
-        wsFile.content = data
+        wsFile.content = base64.b64encode(data)
         return wsFile
 
 
