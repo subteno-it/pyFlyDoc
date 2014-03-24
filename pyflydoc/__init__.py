@@ -30,19 +30,19 @@ from suds.client import Client
 
 
 class FlyDocTransportState(IntEnum):
-    Queued = 0,
-    Submitted = 10,
-    Accepted = 30,
-    Converting = 40,
-    Ready = 50,
-    OnRetry = 60,
-    Hold = 70,
-    Busy = 80,
-    Waiting = 90,
-    Successful = 100,
-    Failure = 200,
-    Canceled = 300,
-    Rejected = 400,
+    Queued = 0
+    Submitted = 10
+    Accepted = 30
+    Converting = 40
+    Ready = 50
+    OnRetry = 60
+    Hold = 70
+    Busy = 80
+    Waiting = 90
+    Successful = 100
+    Failure = 200
+    Canceled = 300
+    Rejected = 400
 
 
 class FlyDocService(object):
