@@ -38,8 +38,10 @@ setup(
     long_description=open('README.txt').read(),
     requires=[
         'suds (>=0.4)',
+        'enum34',
     ],
     install_requires=[
         'suds >= 0.4',
+        'enum34',
     ],
 )
