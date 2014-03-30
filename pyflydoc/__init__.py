@@ -196,9 +196,9 @@ class FlyDoc(object):
         """
         # Initialize services bindings
         bindings = self.sessionService.GetBindings(username)
-        self.sessionService._set_options(location=bindings.sessionServiceLocation)
-        self.submissionService._set_options(location=bindings.submissionServiceLocation)
-        self.queryService._set_options(location=bindings.queryServiceLocation)
+        self.sessionService._set_options(location=str(bindings.sessionServiceLocation))
+        self.submissionService._set_options(location=str(bindings.submissionServiceLocation))
+        self.queryService._set_options(location=str(bindings.queryServiceLocation))
 
         # Call the login method
         self.loginInfo = self.sessionService.Login(userName=username, password=password)
