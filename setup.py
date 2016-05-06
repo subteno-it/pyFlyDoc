@@ -26,7 +26,7 @@ from distutils.core import setup
 
 setup(
     name='pyFlyDoc',
-    version='0.2.1',
+    version='0.2.2',
     author='Sylvain Garancher',
     author_email='sylvain.garancher@syleam.fr',
     packages=['pyflydoc'],
@@ -37,11 +37,11 @@ setup(
     description='Python library for FlyDoc webservices',
     long_description=open('README.txt').read(),
     requires=[
-        'suds (>=0.4)',
+        'suds_jurko (>=0.6)',
         'enum34',
     ],
     install_requires=[
-        'suds >= 0.4',
+        'suds_jurko >= 0.6',
         'enum34',
     ],
 )
